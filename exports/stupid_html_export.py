@@ -6,14 +6,14 @@ from exports.export_base import ExportBase
 class StupidHtmlExport(ExportBase):
 	def __init__(self, filename):
 		self.filename = filename
-		
+
 		if not os.path.exists(filename):
 			with open(filename, "a+") as f:
 				f.write('<head><meta http-equiv="refresh" content="10"></head><body>')
-		
+
 	def get_key(self):
 		return "stpd"
-	
+
 	def export(self, feed_element):
 		# Doing HTML like it was in 2000!
 		with open(self.filename, "a+") as f:
