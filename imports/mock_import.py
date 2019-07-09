@@ -11,12 +11,16 @@ class MockImport(ImportBase):
 		return "mock"
 	
 	def get_elements(self, count):
-		result = FeedElement()
-		result.body = lorem.paragraph()
+		result = []
+		for i in range(3):
+			element = FeedElement()
+			element.body = lorem.paragraph()
 		
-		r = requests.get("http://www.randomkittengenerator.com/cats/rotator.php", allow_redirects=True)
+			r = requests.get("http://www.randomkittengenerator.com/cats/rotator.php", allow_redirects=True)
 		
-		result.images.append(DownloadedImage(r.content))
-		result.date = datetime.datetime.now()
-		result.author = "John Mock"
-		return [ result ]
+			element.images.append(DownloadedImage(r.content))
+			element.date = datetime.datetime.now()
+			element.author = "John Mock"
+			result.append(element)
+
+		return result
