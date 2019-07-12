@@ -11,7 +11,7 @@ class MockImport(ImportBase):
     def get_key(self):
         return "mock"
 
-    def get_elements(self, count):
+    def get_elements(self):
         result = []
         for i in range(3):
             element = FeedElement()
