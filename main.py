@@ -5,16 +5,17 @@ import re
 from common.feed_element import FeedElement
 from imports.mock_import import MockImport
 from imports.twitter_import import TwitterImport
+from imports.youtube_import import YouTubeImport
 from exports.stupid_html_export import StupidHtmlExport
 from storage.inmemory_storage import InmemoryStorage
 
-imports = [TwitterImport()]
+imports = [YouTubeImport()]
 exports = [StupidHtmlExport("export.html")]
 storage = InmemoryStorage()
 
 while True:
     for i in imports:
-        result = i.get_elements(30)
+        result = i.get_elements(5)
 
         for r in result:
             print(r.date, r.author)
