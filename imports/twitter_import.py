@@ -3,6 +3,7 @@ import urllib
 
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
+
 from imports.import_base import ImportBase
 from common.feed_element import FeedElement
 from common.downloaded_image import DownloadedImage
@@ -26,8 +27,8 @@ class TwitterImport(ImportBase):
             element.body = t.find('p', {"class": 'tweet-text'}).get_text()
             element.date = t.find(
                 'a', {'class': 'tweet-timestamp'}).attrs['title']
-            tweet_id = t.attrs['data-item-id']
 
+            tweet_id = t.attrs['data-item-id']
             video = t.find(
                 'div', {'class': 'PlayableMedia--video'})
 
@@ -39,7 +40,7 @@ class TwitterImport(ImportBase):
                     r = requests.get(img_url)
                     element.images.append(DownloadedImage(r.content))
             else:
-                video_address = 'https://twitter.com/i/status/{}'.format(
+                video_address = 'https://twitter.com/i/status/{0}'.format(
                     tweet_id)
                 r = requests.get(video_address)
                 element.videos.append(LinkedVideo(r.content))
