@@ -9,11 +9,14 @@ from common.linked_video import LinkedVideo
 
 
 class YouTubeImport(ImportBase):
+    def __init__(self, username):
+        self.username = username
+
     def get_key(self):
         return 'youtube'
 
     def get_elements(self, count):
-        url = 'https://www.youtube.com/user/TrashRecord/videos'
+        url = 'https://www.youtube.com/user/{0}/videos'.format(self.username)
         html = urlopen(url)
         soup = BeautifulSoup(html, 'html.parser')
         result = []

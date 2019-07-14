@@ -9,7 +9,7 @@ from imports.youtube_import import YouTubeImport
 from exports.stupid_html_export import StupidHtmlExport
 from storage.inmemory_storage import InmemoryStorage
 
-imports = [YouTubeImport()]
+imports = [YouTubeImport('TrashRecord')]
 exports = [StupidHtmlExport("export.html")]
 storage = InmemoryStorage()
 

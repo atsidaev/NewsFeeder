@@ -11,11 +11,14 @@ from common.linked_video import LinkedVideo
 
 
 class TwitterImport(ImportBase):
+    def __init__(self, username):
+        self.username = username
+
     def get_key(self):
         return 'twitter'
 
     def get_elements(self, count):
-        url = 'https://twitter.com/elonmusk'
+        url = 'https://twitter.com/{0}'.format(self.username)
         html = urlopen(url)
         soup = BeautifulSoup(html, 'html.parser')
         tweets = soup.find_all('li', {'data-item-type': 'tweet'})
