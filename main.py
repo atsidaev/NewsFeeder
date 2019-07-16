@@ -9,19 +9,25 @@ from imports.youtube_import import YouTubeImport
 from exports.stupid_html_export import StupidHtmlExport
 from storage.inmemory_storage import InmemoryStorage
 
-imports = [YouTubeImport('TrashRecord')]
+def inspect_element(r):
+    print(r.date, r.author)
+    print(r.body)
+    print(r.images)
+    print(r.videos)
+    if r.nested:
+        print("Original message:")
+        inspect_element(r.nested)
+
+imports = [TwitterImport('elonmusk')]
 exports = [StupidHtmlExport("export.html")]
 storage = InmemoryStorage()
 
 while True:
     for i in imports:
-        result = i.get_elements(5)
+        result = i.get_elements(10)
 
         for r in result:
-            print(r.date, r.author)
-            print(r.body)
-            print(r.images)
-            print(r.videos)
+            inspect_element(r)
             print()
             storage.add_element(i.get_key(), r)
 
