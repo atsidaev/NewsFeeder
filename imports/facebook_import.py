@@ -32,7 +32,7 @@ class FacebookImport(ImportBase):
             element.date = self.get_date(p)
             element.body = p.find(
                 'div', {'class': 'userContent'}).get_text()
-            element.body = self.remove_see_more(p, element.body, 'Ещё')
+            element.body = self.remove_see_more(element.body, 'Ещё')
             element.body = element.body.replace('…', '')
 
             images = p.find_all('div', {'class': 'uiScaledImageContainer'})
@@ -65,7 +65,7 @@ class FacebookImport(ImportBase):
 
                 original_body = p.find(
                     'div', {'class': 'mtm _5pco'}).get_text()
-                original_body = self.remove_see_more(p, original_body, 'Ещё')
+                original_body = self.remove_see_more(original_body, 'Ещё')
                 original_body = original_body.replace('…', '')
 
                 newElement = FeedElement()
@@ -82,7 +82,7 @@ class FacebookImport(ImportBase):
                 break
         return result
 
-    def remove_see_more(self, post, original, sub):
+    def remove_see_more(self, original, sub):
         return original[:-len(sub)] if original.endswith(sub) else original
 
     def is_repost(self, post):
