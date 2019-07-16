@@ -26,8 +26,9 @@ class TwitterImport(ImportBase):
 
         for t in tweets:
             element = FeedElement()
-            element.author = t.find('span', {'class': 'username'}).find('b').get_text()
-            element.body = t.find('p', {"class": 'tweet-text'}).get_text()
+            element.author = t.find(
+                'span', {'class': 'username'}).find('b').get_text()
+            element.body = t.find('p', {'class': 'tweet-text'}).get_text()
             element.date = t.find(
                 'a', {'class': 'tweet-timestamp'}).attrs['title']
 
@@ -43,15 +44,20 @@ class TwitterImport(ImportBase):
                     r = requests.get(img_url)
                     element.images.append(DownloadedImage(r.content))
             else:
-                video_address = 'https://twitter.com/i/status/{0}'.format(tweet_id)
+                video_address = 'https://twitter.com/i/status/{0}'.format(
+                    tweet_id)
                 r = requests.get(video_address)
                 element.videos.append(LinkedVideo(r.content))
 
             # Detect retweet
-            if t.find('span', { 'class': 'js-retweet-text' }):
+            if t.find('span', {'class': 'js-retweet-text'}):
                 newElement = FeedElement()
-                newElement.author = self.username
+                newElement.author = '{0} retweeted {1}'.format(
+                    self.username, element.author)
                 newElement.date = element.date
+                newElement.body = element.body
+                newElement.images = element.images
+                newElement.videos = element.videos
                 newElement.nested = element
                 element = newElement
 
