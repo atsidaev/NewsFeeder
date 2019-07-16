@@ -7,7 +7,8 @@ class InmemoryStorage(StorageBase):
 		self.dict = {}
 
 	def add_element(self, service_key, feed_element):
-		key = service_key + hashlib.md5(feed_element.body.encode('utf-8')).hexdigest()
+		body = (feed_element.body if feed_element.body else "") + (feed_element.nested.body if feed_element.nested else "") + feed_element.date + feed_element.author
+		key = service_key + hashlib.md5(body.encode('utf-8')).hexdigest()
 		if not key in self.dict:
 			self.dict[key] = feed_element
 
