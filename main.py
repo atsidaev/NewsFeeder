@@ -6,16 +6,17 @@ from common.feed_element import FeedElement
 from imports.mock_import import MockImport
 from imports.twitter_import import TwitterImport
 from imports.youtube_import import YouTubeImport
+from imports.facebook_import import FacebookImport
 from exports.stupid_html_export import StupidHtmlExport
 from storage.inmemory_storage import InmemoryStorage
 
-imports = [YouTubeImport('TrashRecord')]
+imports = [FacebookImport('navalny')]
 exports = [StupidHtmlExport("export.html")]
 storage = InmemoryStorage()
 
 while True:
     for i in imports:
-        result = i.get_elements(5)
+        result = i.get_elements(10)
 
         for r in result:
             print(r.date, r.author)
