@@ -10,19 +10,27 @@ from imports.facebook_import import FacebookImport
 from exports.stupid_html_export import StupidHtmlExport
 from storage.inmemory_storage import InmemoryStorage
 
+
+def inspect_element(r):
+    print(r.date, r.author)
+    print(r.body)
+    print(r.images)
+    print(r.videos)
+    if r.nested:
+        print("Original message:")
+        inspect_element(r.nested)
+
+
 imports = [FacebookImport('navalny')]
 exports = [StupidHtmlExport("export.html")]
 storage = InmemoryStorage()
 
 while True:
     for i in imports:
-        result = i.get_elements(45)
+        result = i.get_elements(30)
 
         for r in result:
-            print(r.date, r.author)
-            print(r.body)
-            print(r.images)
-            print(r.videos)
+            inspect_element(r)
             print()
             storage.add_element(i.get_key(), r)
 

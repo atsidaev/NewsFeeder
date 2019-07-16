@@ -72,8 +72,7 @@ class FacebookImport(ImportBase):
                 newElement.author = '{0} shared post by {1}'.format(
                     element.author, original_author)
                 newElement.date = element.date
-                newElement.body = '{0}\nSource: {1}'.format(
-                    element.body, original_body)
+                newElement.body = original_body
 
                 newElement.nested = element
                 element = newElement
