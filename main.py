@@ -16,7 +16,7 @@ storage = InmemoryStorage()
 
 while True:
     for i in imports:
-        result = i.get_elements(10)
+        result = i.get_elements(45)
 
         for r in result:
             print(r.date, r.author)

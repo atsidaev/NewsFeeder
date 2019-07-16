@@ -1,6 +1,7 @@
 import requests
 import urllib
 import re
+import datetime
 
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
@@ -28,12 +29,11 @@ class FacebookImport(ImportBase):
         for p in posts:
             element = FeedElement()
             element.author = p.find('span', {'class': 'fwb'}).get_text()
-            element.date = p.find(
-                'abbr', {'class': 'livetimestamp'}).attrs['title']
+            element.date = self.get_date(p)
             element.body = p.find(
                 'div', {'class': 'userContent'}).get_text()
-            if len(element.body) >= 477:
-                element.body = element.body[:-len('Ещё')]
+            element.body = self.remove_see_more(p, element.body, 'Ещё')
+            element.body = element.body.replace('…', '')
 
             images = p.find_all('div', {'class': 'uiScaledImageContainer'})
 
@@ -54,7 +54,46 @@ class FacebookImport(ImportBase):
                 r = requests.get(video_address)
                 element.videos.append(LinkedVideo(r.content))
 
+            if self.is_repost(p):
+                if p.find(
+                        'span', {'class': '_1nb_ fwn fcg'}):
+                    original_author = p.find(
+                        'span', {'class': '_1nb_ fwn fcg'}).get_text()
+                else:
+                    original_author = p.find(
+                        'span', {'class': 'mbs fwn fcg'}).get_text()
+
+                original_body = p.find(
+                    'div', {'class': 'mtm _5pco'}).get_text()
+                original_body = self.remove_see_more(p, original_body, 'Ещё')
+                original_body = original_body.replace('…', '')
+
+                newElement = FeedElement()
+                newElement.author = '{0} shared post by {1}'.format(
+                    element.author, original_author)
+                newElement.date = element.date
+                newElement.body = '{0}\nSource: {1}'.format(
+                    element.body, original_body)
+
+                newElement.nested = element
+                element = newElement
+
             result.append(element)
             if len(result) >= count:
                 break
         return result
+
+    def remove_see_more(self, post, original, sub):
+        return original[:-len(sub)] if original.endswith(sub) else original
+
+    def is_repost(self, post):
+        repost_type_one = post.find('div', {'class': 'mtm _5pcm'})
+        repost_type_two = post.find('div', {'class': 'mtm _4fzb'})
+        repost_type_three = post.find('div', {'class': 'plm _42ef'})
+        return repost_type_one or repost_type_two or repost_type_three is not None
+
+    def get_date(self, post):
+        date_time = post.find('abbr').get('data-utime')
+        date_time = datetime.datetime.fromtimestamp(
+            int(date_time)).strftime('%d.%m.%Y %H:%M')
+        return date_time
