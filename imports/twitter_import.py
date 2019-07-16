@@ -55,9 +55,6 @@ class TwitterImport(ImportBase):
                 newElement.author = '{0} retweeted {1}'.format(
                     self.username, element.author)
                 newElement.date = element.date
-                newElement.body = element.body
-                newElement.images = element.images
-                newElement.videos = element.videos
                 newElement.nested = element
                 element = newElement
 
