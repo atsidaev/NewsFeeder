@@ -44,8 +44,7 @@ class TwitterImport(ImportBase):
                     r = requests.get(img_url)
                     element.images.append(DownloadedImage(r.content))
             else:
-                video_address = 'https://twitter.com/i/status/{0}'.format(
-                    tweet_id)
+                video_address = 'https://twitter.com/i/status/{0}'.format(tweet_id)
                 r = requests.get(video_address)
                 element.videos.append(LinkedVideo(r.content))
 
