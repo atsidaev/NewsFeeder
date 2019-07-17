@@ -6,8 +6,10 @@ from common.feed_element import FeedElement
 from imports.mock_import import MockImport
 from imports.twitter_import import TwitterImport
 from imports.youtube_import import YouTubeImport
+from imports.facebook_import import FacebookImport
 from exports.stupid_html_export import StupidHtmlExport
 from storage.inmemory_storage import InmemoryStorage
+
 
 def inspect_element(r):
     print(r.date, r.author)
@@ -18,13 +20,14 @@ def inspect_element(r):
         print("Original message:")
         inspect_element(r.nested)
 
-imports = [TwitterImport('elonmusk')]
+
+imports = [FacebookImport('navalny')]
 exports = [StupidHtmlExport("export.html")]
 storage = InmemoryStorage()
 
 while True:
     for i in imports:
-        result = i.get_elements(10)
+        result = i.get_elements(30)
 
         for r in result:
             inspect_element(r)
