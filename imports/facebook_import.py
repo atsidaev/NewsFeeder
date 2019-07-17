@@ -72,7 +72,10 @@ class FacebookImport(ImportBase):
                 newElement.author = '{0} shared post by {1}'.format(
                     element.author, original_author)
                 newElement.date = element.date
-                newElement.body = original_body
+                newElement.body = element.body
+
+                element.author = original_author
+                element.body = original_body
 
                 newElement.nested = element
                 element = newElement
@@ -89,7 +92,7 @@ class FacebookImport(ImportBase):
         repost_type_one = post.find('div', {'class': 'mtm _5pcm'})
         repost_type_two = post.find('div', {'class': 'mtm _4fzb'})
         repost_type_three = post.find('div', {'class': 'plm _42ef'})
-        return repost_type_one or repost_type_two or repost_type_three is not None
+        return True if repost_type_one or repost_type_two or repost_type_three is not None else False
 
     def get_date(self, post):
         date_time = post.find('abbr').get('data-utime')
