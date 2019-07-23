@@ -29,7 +29,7 @@ class YouTubeImport(ImportBase):
                 attrs={'name': 'title'}).attrs['content']
 
             video_address = 'https://www.youtube.com/{0}'.format(
-                v.get("href"))
+                v.get('href'))
             r = requests.get(video_address)
             element.videos.append(LinkedVideo(r.content))
 
