@@ -31,7 +31,7 @@ class FacebookImport(ImportBase):
             element.author = p.find('span', {'class': 'fwb'}).get_text()
             element.date = self.get_date(p)
             element.body = p.find(
-                'div', {'class': 'userContent'}).get_text()
+                'div', {'class': 'userContent'}).get_text('\n')
             element.body = self.remove_see_more(element.body, 'Ещё')
             element.body = element.body.replace('…', '')
 
@@ -64,7 +64,7 @@ class FacebookImport(ImportBase):
                         'span', {'class': 'mbs fwn fcg'}).get_text()
 
                 original_body = p.find(
-                    'div', {'class': 'mtm _5pco'}).get_text()
+                    'div', {'class': 'mtm _5pco'}).get_text('\n')
                 original_body = self.remove_see_more(original_body, 'Ещё')
                 original_body = original_body.replace('…', '')
 
