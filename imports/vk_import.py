@@ -70,6 +70,8 @@ class VKImport(ImportBase):
                     element.videos.append(LinkedVideo(r.content))
 
             if p.find('div', {'class': 'pic_body_wrap'}):
+                original_body = ""
+                original_author = ""
                 if p.select_one('div.pi_text:nth-of-type(2)'):
                     original_body = p.select_one(
                         'div.pi_text:nth-of-type(2)').get_text('\n')
